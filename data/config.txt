@@ -1,0 +1,6 @@
+width=1200
+height=900
+fps=240
+music=0.50
+sfx=0.80
+fullscreen=0
