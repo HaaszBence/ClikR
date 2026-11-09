@@ -1,0 +1,7 @@
+# Lefordított binárisok és tárgyfájlok
+*.exe
+*.o
+*.out
+
+# Mentett játékállás (hogy a saját tesztmentésed ne kerüljön fel)
+data/save.txt
