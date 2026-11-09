@@ -1,70 +1,59 @@
 #include <raylib.h>
+#include <time.h>
 #include "menu.h"
 #include "settings.h"
 #include "game.h"
 #include "assets.h"
+#include "ui.h"
 
 int main(void) {
+    GameSettings settings = Settings_Load("data/config.txt");
 
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    InitWindow(1200, 900, "ClikR");
+    InitWindow(settings.windowWidth, settings.windowHeight, "ClikR");
+    if (settings.isFullscreen) ToggleFullscreen();
 
     SetExitKey(KEY_NULL);
-    
     InitAudioDevice();
-    SetTargetFPS(240);
-
+    SetTargetFPS(settings.targetFps);
+    SetRandomSeed((unsigned int)time(NULL));
     HideCursor();
 
-    Scene currentScene = SCENE_MENU;
-
-    // default settings
-    GameSettings settings = { 0.5f, 0.8f, false };
-    
-    // load assets
     GameAssets assets = Assets_Load();
     SetSoundVolume(assets.bgm, settings.musicVolume);
     SetSoundVolume(assets.clickSfx, settings.sfxVolume);
     PlaySound(assets.bgm);
 
+    Scene currentScene = SCENE_MENU;
+
     while (!WindowShouldClose() && currentScene != SCENE_EXIT) {
-        if (!IsSoundPlaying(assets.bgm)) {
-            PlaySound(assets.bgm);
-        }
+        if (!IsSoundPlaying(assets.bgm)) PlaySound(assets.bgm);
 
         BeginDrawing();
-        ClearBackground((Color){ 30, 30, 45, 255 });
+        ClearBackground(PALETTE_DARK_OLIVE);
 
-        if (currentScene == SCENE_MENU) {
-            currentScene = Menu_UpdateAndDraw(assets.clickSfx);
-            if (currentScene == SCENE_SETTINGS) {
-                settings.returnScene = SCENE_MENU; // Főmenüből nyitottuk meg
-            }
+        switch (currentScene) {
+            case SCENE_MENU:
+                currentScene = Menu_UpdateAndDraw(assets.clickSfx);
+                if (currentScene == SCENE_SETTINGS) settings.returnScene = SCENE_MENU;
+                break;
+            case SCENE_SETTINGS:
+                currentScene = Settings_UpdateAndDraw(&settings, &assets);
+                break;
+            case SCENE_GAME:
+                currentScene = Game_UpdateAndDraw(&settings, assets.clickSfx);
+                break;
+            default:
+                break;
         }
-        else if (currentScene == SCENE_SETTINGS) {
-            currentScene = Settings_UpdateAndDraw(&settings, assets.bgm, assets.clickSfx);
-        }
-        else if (currentScene == SCENE_GAME) {
-            currentScene = Game_UpdateAndDraw(&settings, assets.clickSfx);
-        }
 
-        Vector2 mouse = GetMousePosition();
-        float size = GetScreenHeight() * 0.045f;
-        Texture2D activeTex = IsMouseButtonDown(MOUSE_BUTTON_LEFT) ? assets.cursorClick : assets.cursorIdle;
-
-        Rectangle src  = { 0.0f, 0.0f, (float)activeTex.width, (float)activeTex.height };
-        Rectangle dest = { mouse.x, mouse.y, size, size };
-        DrawTexturePro(activeTex, src, dest, (Vector2){ 0.0f, 0.0f }, 0.0f, WHITE);
-
+        UI_DrawCursor(&assets);
         EndDrawing();
     }
 
     Assets_Unload(&assets);
     ShowCursor();
-
     CloseAudioDevice();
-
     CloseWindow();
-
     return 0;
 }

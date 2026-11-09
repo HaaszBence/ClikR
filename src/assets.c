@@ -2,14 +2,16 @@
 
 GameAssets Assets_Load(void) {
     GameAssets assets = { 0 };
-    
+
     // Textúrák
-    assets.cursorIdle  = LoadTexture("assets/cursor/base.png");
-    assets.cursorClick = LoadTexture("assets/cursor/base_click.png");
+    assets.cursorIdle  = LoadTexture("assets/ui/cursor/base.png");
+    SetTextureFilter(assets.cursorIdle, TEXTURE_FILTER_BILINEAR);
+    assets.cursorClick = LoadTexture("assets/ui/cursor/base_click.png");
+    SetTextureFilter(assets.cursorClick, TEXTURE_FILTER_BILINEAR);
 
     // Hangok
-    assets.bgm      = LoadSound("assets/menu/music/music.mp3");
-    assets.clickSfx = LoadSound("assets/menu/sfx/click.mp3");
+    assets.bgm      = LoadSound("assets/music/music.mp3");
+    assets.clickSfx = LoadSound("assets/sfx/click.mp3");
 
     return assets;
 }

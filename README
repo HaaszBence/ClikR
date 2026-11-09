@@ -1,0 +1,20 @@
+# ClikR
+
+A ClikR egy raylibre épülő, C nyelven készült, jelenleg **v0.1 Alpha** állapotú
+játékprototípus. A programban főmenü, alapbeállítások és szünetmenü érhető el;
+a tényleges játékmenet fejlesztés alatt áll.
+
+## Dokumentáció
+
+- [Játékosoknak szóló útmutató](docs/user.md): indítás, menük, vezérlés és
+  beállítások.
+- [Fejlesztői dokumentáció](docs/dev.md): projektfelépítés, fordítás,
+  konfiguráció és erőforrások.
+
+## Gyors indítás
+
+A projektben található `ClikR.exe` futtatható fájl. Indításkor a program a
+projekt gyökérkönyvtárát használja munkakönyvtárként, és innen olvassa be a
+`data/config.txt` fájlt, valamint az `assets/` könyvtár erőforrásait. Ha
+forrásból szeretnéd fordítani, a szükséges környezetet és VS Code-os lépéseket
+a [fejlesztői dokumentáció](docs/dev.md) ismerteti.

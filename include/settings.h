@@ -1,16 +1,24 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include "menu.h" // A Scene enum miatt
+#include <raylib.h>
+#include <stdbool.h>
+#include "menu.h"
+#include "assets.h"
 
 typedef struct {
-    float musicVolume; // 0.0f - 1.0f (0% - 100%)
-    float sfxVolume;   // 0.0f - 1.0f (0% - 100%)
+    int windowWidth;
+    int windowHeight;
+    int targetFps;
+    float musicVolume;
+    float sfxVolume;
     bool isFullscreen;
     Scene returnScene;
 } GameSettings;
 
-// Frissíti és kirajzolja a beállítások menüt, és azonnal alkalmazza a változtatásokat
-Scene Settings_UpdateAndDraw(GameSettings *settings, Sound bgm, Sound clickSound);
+// Betölti a beállításokat a fájlból (ha nincs fájl, alapértékeket ad)
+GameSettings Settings_Load(const char *filepath);
+
+Scene Settings_UpdateAndDraw(GameSettings *settings, GameAssets *assets);
 
 #endif
