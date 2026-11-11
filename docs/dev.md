@@ -34,12 +34,14 @@ ClikR/
 |---|---|
 | `src/main.c` | Beállítások és raylib inicializálása, fő ciklus, jelenetváltás, erőforrások felszabadítása. |
 | `src/menu.c` | Főmenü háttere, animált matematikai jelölések, menügombok. |
-| `src/game.c` | Játékjelenet és szünetmenü. |
+| `src/game.c` | Játékjelenet, pause állapot és a pause menü műveleteinek kezelése. |
+| `src/pause.c` | A pause menü megjelenítése és a választott művelet visszaadása. |
 | `src/settings.c` | Beállítások betöltése, mentése, kezelőfelülete és alkalmazása. |
 | `src/ui.c` | Közös gomb, hangerőcsúszka és saját kurzor kirajzolása. |
 | `src/assets.c` | Textúrák és hangok betöltése, majd felszabadítása. |
 | `include/menu.h` | A `Scene` felsorolás és a menü függvényének deklarációja. |
 | `include/game.h` | Játékjelenet függvényének deklarációja. |
+| `include/pause.h` | A pause menü műveleteit és függvényét deklarálja. |
 | `include/settings.h` | `GameSettings` adattípus és beállításfüggvények. |
 | `include/ui.h` | Színpaletta és közös UI-függvények. |
 | `include/assets.h` | A betöltött erőforrásokat összefogó `GameAssets` típus. |
@@ -65,7 +67,9 @@ A jeleneteket az `include/menu.h` fájlban deklarált `Scene` enum azonosítja:
 az új jelenetet adják vissza; így történik a menü- és képernyőváltás.
 A beállításképernyő a `GameSettings.returnScene` mezőben kapja meg, hová kell
 visszatérnie. A játék szünetállapotát a `src/game.c` fájl statikus
-`isPaused` változója tárolja.
+`isPaused` változója tárolja. A `src/pause.c` a szünetmenüt rajzolja ki, és
+`PauseAction` értékkel jelzi a választást; a pause állapot és az ebből következő
+jelenetváltás kezelése a `src/game.c` feladata.
 
 ## Beállítások és mentés
 
