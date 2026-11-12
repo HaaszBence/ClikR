@@ -5,8 +5,9 @@
 A ClikR egy C nyelven írt, raylibet használó, Windowsra beállított játékprototípus.
 A főmenü, a beállításképernyő, a szünetmenü, az alapvető UI-elemek, az
 erőforrás-betöltés és a konfiguráció betöltése már megvalósult. A játékjelenet
-jelenleg csak egy helykitöltő feliratot és szünetmenüt tartalmaz; játékmenet,
-játékállás-mentés és pontozás még nincs.
+egy textúra nélküli entitást és annak HP-sávját mutatja; a HUD-on a kreditek
+száma is látható. Kattintás, kreditszerzés, költés és játékállás-mentés még
+nincs.
 
 ## Könyvtárszerkezet
 
@@ -35,12 +36,14 @@ ClikR/
 | `src/main.c` | Beállítások és raylib inicializálása, fő ciklus, jelenetváltás, erőforrások felszabadítása. |
 | `src/menu.c` | Főmenü háttere, animált matematikai jelölések, menügombok. |
 | `src/game.c` | Játékjelenet, pause állapot és a pause menü műveleteinek kezelése. |
+| `src/entity.c` | Entitássablonok, példányosítás és entitásmegjelenítés. |
 | `src/pause.c` | A pause menü megjelenítése és a választott művelet visszaadása. |
 | `src/settings.c` | Beállítások betöltése, mentése, kezelőfelülete és alkalmazása. |
 | `src/ui.c` | Közös gomb, hangerőcsúszka és saját kurzor kirajzolása. |
 | `src/assets.c` | Textúrák és hangok betöltése, majd felszabadítása. |
 | `include/menu.h` | A `Scene` felsorolás és a menü függvényének deklarációja. |
 | `include/game.h` | Játékjelenet függvényének deklarációja. |
+| `include/entity.h` | Entitássablonok, példányok és rajzolási függvény deklarációi. |
 | `include/pause.h` | A pause menü műveleteit és függvényét deklarálja. |
 | `include/settings.h` | `GameSettings` adattípus és beállításfüggvények. |
 | `include/ui.h` | Színpaletta és közös UI-függvények. |
@@ -70,6 +73,11 @@ visszatérnie. A játék szünetállapotát a `src/game.c` fájl statikus
 `isPaused` változója tárolja. A `src/pause.c` a szünetmenüt rajzolja ki, és
 `PauseAction` értékkel jelzi a választást; a pause állapot és az ebből következő
 jelenetváltás kezelése a `src/game.c` feladata.
+
+Az entitássablon a nevet, a maximális HP-t és a teljesítésért járó kreditet
+tárolja. A játékbeli `GameEntity` példány külön tárolja az aktuális HP-t és a
+teljesített állapotot. A `GameEntity_Spawn` az új példány HP-ját a sablon
+maximális HP-jára állítja. Jelenleg egy sablon van: 10 max HP és 1 kredit.
 
 ## Beállítások és mentés
 

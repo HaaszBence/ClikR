@@ -24,7 +24,7 @@ bool UI_DrawButton(Rectangle rect, const char *text, int fontSize, Color baseCol
     }
 
     Rectangle shadowRect = visualRect;
-    shadowRect.x += 4.0f;
+    
     shadowRect.y += 5.0f;
     DrawRectangleRounded(shadowRect, 0.25f, 8, (Color){ 32, 46, 14, 170 });
 

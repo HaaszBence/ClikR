@@ -38,7 +38,10 @@ meg.
 ## Játék és szünetmenü
 
 A **START** kiválasztása után megjelenik a játékjelenet. Ebben a prototípusban
-még nincs aktív játékmenet.
+még nincs aktív játékmenet. Egy egyszerű, textúra nélküli entitás jelenik meg
+a középső területen, a HP-ját pedig sáv jelzi. A jobb felső sarokban látható
+kreditszámláló jelenleg 0-ról indul; kreditet egyelőre nem lehet szerezni vagy
+elkölteni.
 
 Játék közben az **Esc** billentyű megnyitja a szünetmenüt. Az **Esc** ismételt
 lenyomásával bezárható; ugyanez a **CONTINUE** gombbal is megtehető.

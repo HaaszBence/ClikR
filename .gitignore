@@ -5,3 +5,5 @@
 
 # Mentett játékállás (hogy a saját tesztmentésed ne kerüljön fel)
 data/save.txt
+
+.vscode/

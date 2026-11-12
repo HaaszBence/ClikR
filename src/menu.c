@@ -32,6 +32,8 @@ static const MenuSymbol symbols[] = {
 };
 
 static void DrawMenuBackdrop(float screenWidth, float screenHeight) {
+
+    // Draw a subtle grid and floating symbols in the background
     Color gridColor = { PALETTE_CHALK.r, PALETTE_CHALK.g, PALETTE_CHALK.b, 18 };
     Color symbolColor = { PALETTE_CHALK.r, PALETTE_CHALK.g, PALETTE_CHALK.b, 28 };
     const int gridSpacing = 48;
@@ -74,7 +76,7 @@ Scene Menu_UpdateAndDraw(Sound clickSound) {
     DrawText(title, (int)((sw - titleW) / 2.0f) + 3, (int)titleY + 4, titleSize, (Color){ 32, 46, 14, 170 });
     DrawText(title, (int)((sw - titleW) / 2.0f), (int)titleY, titleSize, PALETTE_GOLD);
 
-    const char *subtitle = "Analizis & BSz Szigorlat Szimulator";
+    const char *subtitle = "Learn ";
     int subtitleSize = (int)(sh * 0.025f);
     int subtitleW = MeasureText(subtitle, subtitleSize);
     DrawText(subtitle, (int)((sw - subtitleW) / 2.0f), (int)(sh * 0.27f), subtitleSize, PALETTE_LEMON);

@@ -1,12 +1,21 @@
 #include "game.h"
+#include "entity.h"
 #include "pause.h"
 #include "ui.h"
 
 static bool isPaused = false;
+static unsigned int credits = 0;
+static GameEntity activeEntity;
+static bool entitySpawned = false;
 
 Scene Game_UpdateAndDraw(GameSettings *settings, Sound clickSound) {
     float sw = (float)GetScreenWidth();
     float sh = (float)GetScreenHeight();
+
+    if (!entitySpawned) {
+        activeEntity = GameEntity_Spawn(&GAME_ENTITY_BASIC_TEMPLATE);
+        entitySpawned = true;
+    }
 
     if (IsKeyPressed(KEY_ESCAPE)) {
         PlaySound(clickSound);
@@ -14,6 +23,22 @@ Scene Game_UpdateAndDraw(GameSettings *settings, Sound clickSound) {
     }
 
     DrawText("Game (ESC to pause)", (int)(sw * 0.04f), (int)(sh * 0.05f), (int)(sh * 0.03f), PALETTE_GOLD);
+
+    int creditsFontSize = (int)(sh * 0.03f);
+    const char *creditsText = TextFormat("CREDITS: %u", credits);
+    int creditsTextWidth = MeasureText(creditsText, creditsFontSize);
+    DrawText(creditsText, (int)sw - (int)(sw * 0.04f) - creditsTextWidth,
+             (int)(sh * 0.05f), creditsFontSize, PALETTE_GOLD);
+
+    float entityWidth = sw * 0.24f;
+    float entityHeight = sh * 0.24f;
+    Rectangle entityRect = {
+        (sw - entityWidth) / 2.0f,
+        sh * 0.34f,
+        entityWidth,
+        entityHeight
+    };
+    GameEntity_Draw(&activeEntity, entityRect);
 
     if (isPaused) {
         switch (Pause_UpdateAndDraw(clickSound)) {
