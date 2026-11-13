@@ -2,19 +2,25 @@
 #include "entity.h"
 #include "pause.h"
 #include "ui.h"
+#include <limits.h>
 
 static bool isPaused = false;
 static unsigned int credits = 0;
+static const unsigned int clickPower = 1;
 static GameEntity activeEntity;
 static bool entitySpawned = false;
+
+static void SpawnActiveEntity(void) {
+    activeEntity = GameEntity_Create(&GAME_ENTITY_BASIC_TEMPLATE);
+    entitySpawned = true;
+}
 
 Scene Game_UpdateAndDraw(GameSettings *settings, Sound clickSound) {
     float sw = (float)GetScreenWidth();
     float sh = (float)GetScreenHeight();
 
     if (!entitySpawned) {
-        activeEntity = GameEntity_Spawn(&GAME_ENTITY_BASIC_TEMPLATE);
-        entitySpawned = true;
+        SpawnActiveEntity();
     }
 
     if (IsKeyPressed(KEY_ESCAPE)) {
@@ -30,15 +36,16 @@ Scene Game_UpdateAndDraw(GameSettings *settings, Sound clickSound) {
     DrawText(creditsText, (int)sw - (int)(sw * 0.04f) - creditsTextWidth,
              (int)(sh * 0.05f), creditsFontSize, PALETTE_GOLD);
 
-    float entityWidth = sw * 0.24f;
-    float entityHeight = sh * 0.24f;
-    Rectangle entityRect = {
-        (sw - entityWidth) / 2.0f,
-        sh * 0.34f,
-        entityWidth,
-        entityHeight
-    };
-    GameEntity_Draw(&activeEntity, entityRect);
+    if (!isPaused && GameEntity_IsClicked(&activeEntity)) {
+        PlaySound(clickSound);
+        if (GameEntity_ApplyClick(&activeEntity, clickPower)) {
+            unsigned int reward = activeEntity.template->creditReward;
+            credits = reward > UINT_MAX - credits ? UINT_MAX : credits + reward;
+            SpawnActiveEntity();
+        }
+    }
+
+    GameEntity_Draw(&activeEntity);
 
     if (isPaused) {
         switch (Pause_UpdateAndDraw(clickSound)) {

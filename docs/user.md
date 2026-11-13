@@ -37,11 +37,13 @@ meg.
 
 ## Játék és szünetmenü
 
-A **START** kiválasztása után megjelenik a játékjelenet. Ebben a prototípusban
-még nincs aktív játékmenet. Egy egyszerű, textúra nélküli entitás jelenik meg
-a középső területen, a HP-ját pedig sáv jelzi. A jobb felső sarokban látható
-kreditszámláló jelenleg 0-ról indul; kreditet egyelőre nem lehet szerezni vagy
-elkölteni.
+A **START** kiválasztása után megjelenik a játékjelenet. Egy egyszerű,
+textúra nélküli entitás jelenik meg véletlenszerű helyen, kis négyzetes
+hitboxként; a HP-ját a fölötte elhelyezett sáv jelzi. Az entitás HP-ja
+0-ról indul. Minden hitboxra érkező
+kattintás 1-gyel növeli a HP-t; amikor a sáv megtelik, megkapod az entitás
+kreditjutalmát, és egy új, üres entitás jelenik meg. A jobb felső sarokban
+látható kreditszámláló mutatja az összegyűjtött krediteket.
 
 Játék közben az **Esc** billentyű megnyitja a szünetmenüt. Az **Esc** ismételt
 lenyomásával bezárható; ugyanez a **CONTINUE** gombbal is megtehető.

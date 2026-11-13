@@ -14,11 +14,14 @@ typedef struct {
     const GameEntityTemplate *template;
     unsigned int currentHp;
     bool completed;
+    Vector2 spawnPosition;
 } GameEntity;
 
 extern const GameEntityTemplate GAME_ENTITY_BASIC_TEMPLATE;
 
-GameEntity GameEntity_Spawn(const GameEntityTemplate *template);
-void GameEntity_Draw(const GameEntity *entity, Rectangle bounds);
+GameEntity GameEntity_Create(const GameEntityTemplate *template);
+bool GameEntity_ApplyClick(GameEntity *entity, unsigned int clickPower);
+bool GameEntity_IsClicked(const GameEntity *entity);
+void GameEntity_Draw(const GameEntity *entity);
 
 #endif

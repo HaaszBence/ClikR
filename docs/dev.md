@@ -5,8 +5,10 @@
 A ClikR egy C nyelven írt, raylibet használó, Windowsra beállított játékprototípus.
 A főmenü, a beállításképernyő, a szünetmenü, az alapvető UI-elemek, az
 erőforrás-betöltés és a konfiguráció betöltése már megvalósult. A játékjelenet
-egy textúra nélküli entitást és annak HP-sávját mutatja; a HUD-on a kreditek
-száma is látható. Kattintás, kreditszerzés, költés és játékállás-mentés még
+egy textúra nélküli, kis négyzetes hitboxot véletlenszerű pozícióban és a
+fölötte megjelenő HP-sávot mutatja. A kattintások töltik az entitás HP-ját;
+teljesítéskor a játék jóváírja a
+kreditjutalmat és új entitást hoz létre. Kreditköltés és játékállás-mentés még
 nincs.
 
 ## Könyvtárszerkezet
@@ -36,14 +38,14 @@ ClikR/
 | `src/main.c` | Beállítások és raylib inicializálása, fő ciklus, jelenetváltás, erőforrások felszabadítása. |
 | `src/menu.c` | Főmenü háttere, animált matematikai jelölések, menügombok. |
 | `src/game.c` | Játékjelenet, pause állapot és a pause menü műveleteinek kezelése. |
-| `src/entity.c` | Entitássablonok, példányosítás és entitásmegjelenítés. |
+| `src/entity.c` | Entitássablonok, példányosítás, elhelyezés, hitbox és megjelenítés. |
 | `src/pause.c` | A pause menü megjelenítése és a választott művelet visszaadása. |
 | `src/settings.c` | Beállítások betöltése, mentése, kezelőfelülete és alkalmazása. |
 | `src/ui.c` | Közös gomb, hangerőcsúszka és saját kurzor kirajzolása. |
 | `src/assets.c` | Textúrák és hangok betöltése, majd felszabadítása. |
 | `include/menu.h` | A `Scene` felsorolás és a menü függvényének deklarációja. |
 | `include/game.h` | Játékjelenet függvényének deklarációja. |
-| `include/entity.h` | Entitássablonok, példányok és rajzolási függvény deklarációi. |
+| `include/entity.h` | Entitássablonok, példányok és entitásműveletek deklarációi. |
 | `include/pause.h` | A pause menü műveleteit és függvényét deklarálja. |
 | `include/settings.h` | `GameSettings` adattípus és beállításfüggvények. |
 | `include/ui.h` | Színpaletta és közös UI-függvények. |
@@ -76,8 +78,14 @@ jelenetváltás kezelése a `src/game.c` feladata.
 
 Az entitássablon a nevet, a maximális HP-t és a teljesítésért járó kreditet
 tárolja. A játékbeli `GameEntity` példány külön tárolja az aktuális HP-t és a
-teljesített állapotot. A `GameEntity_Spawn` az új példány HP-ját a sablon
-maximális HP-jára állítja. Jelenleg egy sablon van: 10 max HP és 1 kredit.
+teljesített állapotot. A `GameEntity_Create` 0 HP-val hozza létre az új
+példányt és véletlen, normalizált spawnpozíciót rendel hozzá. Az entitásmodul
+számolja ki az ablakmérethez igazított hitboxot, ellenőrzi a kattintást, és
+kirajzolja a négyzetet meg a fölötte lévő HP-sávot. A kattintási erő jelenleg
+1; a HP a sablon maximális értékének
+elérésekor az entitás teljesítetté válik, és jár a sablon kreditjutalma.
+Teljesítés után új példány jön létre. Jelenleg egy sablon van: 10 max HP és
+1 kredit.
 
 ## Beállítások és mentés
 
